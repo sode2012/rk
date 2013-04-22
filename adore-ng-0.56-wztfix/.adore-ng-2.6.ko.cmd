@@ -1,0 +1,1 @@
+cmd_/home/wzt/test/tmp/adore-ng-0.57/adore-ng-2.6.ko := ld -m elf_i386 -m elf_i386 -r -o /home/wzt/test/tmp/adore-ng-0.57/adore-ng-2.6.ko /home/wzt/test/tmp/adore-ng-0.57/adore-ng-2.6.o /home/wzt/test/tmp/adore-ng-0.57/adore-ng-2.6.mod.o
