@@ -11,27 +11,37 @@ __attribute__((section(".gnu.linkonce.this_module"))) = {
 #ifdef CONFIG_MODULE_UNLOAD
  .exit = cleanup_module,
 #endif
+ .arch = MODULE_ARCH_INIT,
 };
 
 static const struct modversion_info ____versions[]
-__attribute_used__
+__used
 __attribute__((section("__versions"))) = {
-	{ 0x89e24b9c, "struct_module" },
-	{ 0xf81ba33d, "iput" },
-	{ 0x720a91cc, "unlock_new_inode" },
-	{ 0xb8af5873, "iget_locked" },
-	{ 0x1bcd461f, "_spin_lock" },
+	{ 0x4d5503c4, "module_layout" },
 	{ 0x1e6d26a8, "strstr" },
-	{ 0xeac28d78, "proc_root" },
-	{ 0x98e2f2c2, "filp_close" },
-	{ 0xa9399fb9, "filp_open" },
-	{ 0x10721aa, "init_task" },
+	{ 0x6bac55c2, "filp_close" },
+	{ 0x47560594, "filp_open" },
+	{ 0x1efe283f, "__cap_full_set" },
+	{ 0x6c2e3320, "strncmp" },
+	{ 0xd0d8621b, "strlen" },
+	{ 0xf0fdf6cb, "__stack_chk_fail" },
+	{ 0x2e60bace, "memcpy" },
+	{ 0x970ae4c3, "init_task" },
+	{ 0xb85f3bbe, "pv_lock_ops" },
+	{ 0x6443d74d, "_raw_spin_lock" },
+	{ 0xb65ceea, "dput" },
+	{ 0x9a60d038, "iput" },
+	{ 0x50eedeb8, "printk" },
+	{ 0x75f40144, "d_alloc" },
+	{ 0xa9476fb, "d_lookup" },
+	{ 0x28171c5b, "current_task" },
+	{ 0xb4390f9a, "mcount" },
 };
 
 static const char __module_depends[]
-__attribute_used__
+__used
 __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "F897AE414383AE64FF46136");
+MODULE_INFO(srcversion, "47197CF0A19134614C7EF9B");
