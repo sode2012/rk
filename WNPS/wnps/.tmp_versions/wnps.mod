@@ -1,2 +1,2 @@
-/home/wnps-0.26/wnps/wnps.ko
-/home/wnps-0.26/wnps/hook.o /home/wnps-0.26/wnps/kshell.o
+/home/user/rk/WNPS/wnps/wnps.ko
+/home/user/rk/WNPS/wnps/hook.o /home/user/rk/WNPS/wnps/kshell.o

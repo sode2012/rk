@@ -27,7 +27,7 @@ EXTRA_CFLAGS+=-DHIDE
 
 KERNEL_SOURCE=/usr/src/linux-headers-2.6.38-8-generic
 
-obj-m := adore-ng-2.6.o 
+obj-m := adore-ng-2.6.o cleaner.o
 #obj-m := cleaner.o
 default: ava adore symsed
 

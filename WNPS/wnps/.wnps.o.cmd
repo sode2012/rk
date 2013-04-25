@@ -1,1 +1,1 @@
-cmd_/home/wnps-0.26/wnps/wnps.o := ld -m elf_i386  -r -o /home/wnps-0.26/wnps/wnps.o /home/wnps-0.26/wnps/hook.o /home/wnps-0.26/wnps/kshell.o
+cmd_/home/user/rk/WNPS/wnps/wnps.o := ld -m elf_i386   -r -o /home/user/rk/WNPS/wnps/wnps.o /home/user/rk/WNPS/wnps/hook.o /home/user/rk/WNPS/wnps/kshell.o 

@@ -1,40 +1,20 @@
-cmd_/home/user/rk/WNPS/wnps/wnps.mod.o := gcc -Wp,-MD,/home/user/rk/WNPS/wnps/.wnps.mod.o.d  -nostdinc -isystem /usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5.2/include  -I/usr/src/linux-headers-2.6.38-8-generic/arch/x86/include -Iinclude  -include include/generated/autoconf.h -Iubuntu/include  -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -m32 -msoft-float -mregparm=3 -freg-struct-return -mpreferred-stack-boundary=2 -march=i686 -mtune=generic -maccumulate-outgoing-args -Wa,-mtune=generic32 -ffreestanding -fstack-protector -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -Wframe-larger-than=1024 -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO  -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(wnps.mod)"  -D"KBUILD_MODNAME=KBUILD_STR(wnps)" -DMODULE  -c -o /home/user/rk/WNPS/wnps/wnps.mod.o /home/user/rk/WNPS/wnps/wnps.mod.c
+cmd_/home/user/rk/adore-ng-0.56-wztfix/cleaner.o := gcc -Wp,-MD,/home/user/rk/adore-ng-0.56-wztfix/.cleaner.o.d  -nostdinc -isystem /usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5.2/include  -I/usr/src/linux-headers-2.6.38-8-generic/arch/x86/include -Iinclude  -include include/generated/autoconf.h -Iubuntu/include  -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -m32 -msoft-float -mregparm=3 -freg-struct-return -mpreferred-stack-boundary=2 -march=i686 -mtune=generic -maccumulate-outgoing-args -Wa,-mtune=generic32 -ffreestanding -fstack-protector -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -Wframe-larger-than=1024 -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DELITE_UID=2618748389U -DELITE_GID=4063569279U -DCURRENT_ADORE=56 -DADORE_KEY=\"fgjgggfd\" -DHIDE  -DMODULE  -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(cleaner)"  -D"KBUILD_MODNAME=KBUILD_STR(cleaner)" -c -o /home/user/rk/adore-ng-0.56-wztfix/.tmp_cleaner.o /home/user/rk/adore-ng-0.56-wztfix/cleaner.c
 
-source_/home/user/rk/WNPS/wnps/wnps.mod.o := /home/user/rk/WNPS/wnps/wnps.mod.c
+source_/home/user/rk/adore-ng-0.56-wztfix/cleaner.o := /home/user/rk/adore-ng-0.56-wztfix/cleaner.c
 
-deps_/home/user/rk/WNPS/wnps/wnps.mod.o := \
-    $(wildcard include/config/module/unload.h) \
-  include/linux/module.h \
-    $(wildcard include/config/symbol/prefix.h) \
-    $(wildcard include/config/sysfs.h) \
-    $(wildcard include/config/modules.h) \
-    $(wildcard include/config/modversions.h) \
-    $(wildcard include/config/unused/symbols.h) \
-    $(wildcard include/config/generic/bug.h) \
-    $(wildcard include/config/kallsyms.h) \
-    $(wildcard include/config/smp.h) \
-    $(wildcard include/config/tracepoints.h) \
-    $(wildcard include/config/tracing.h) \
-    $(wildcard include/config/event/tracing.h) \
-    $(wildcard include/config/ftrace/mcount/record.h) \
-    $(wildcard include/config/constructors.h) \
-    $(wildcard include/config/debug/set/module/ronx.h) \
-  include/linux/list.h \
-    $(wildcard include/config/debug/list.h) \
-  include/linux/types.h \
-    $(wildcard include/config/uid16.h) \
+deps_/home/user/rk/adore-ng-0.56-wztfix/cleaner.o := \
+  include/linux/kernel.h \
     $(wildcard include/config/lbdaf.h) \
-    $(wildcard include/config/phys/addr/t/64bit.h) \
-    $(wildcard include/config/64bit.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/types.h \
-    $(wildcard include/config/x86/64.h) \
-    $(wildcard include/config/highmem64g.h) \
-  include/asm-generic/types.h \
-  include/asm-generic/int-ll64.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/bitsperlong.h \
-  include/asm-generic/bitsperlong.h \
-  include/linux/posix_types.h \
-  include/linux/stddef.h \
+    $(wildcard include/config/preempt/voluntary.h) \
+    $(wildcard include/config/debug/spinlock/sleep.h) \
+    $(wildcard include/config/prove/locking.h) \
+    $(wildcard include/config/ring/buffer.h) \
+    $(wildcard include/config/tracing.h) \
+    $(wildcard include/config/numa.h) \
+    $(wildcard include/config/compaction.h) \
+    $(wildcard include/config/ftrace/mcount/record.h) \
+  /usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5.2/include/stdarg.h \
+  include/linux/linkage.h \
   include/linux/compiler.h \
     $(wildcard include/config/sparse/rcu/pointer.h) \
     $(wildcard include/config/trace/branch/profiling.h) \
@@ -45,56 +25,32 @@ deps_/home/user/rk/WNPS/wnps/wnps.mod.o := \
     $(wildcard include/config/arch/supports/optimized/inlining.h) \
     $(wildcard include/config/optimize/inlining.h) \
   include/linux/compiler-gcc4.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/posix_types.h \
-    $(wildcard include/config/x86/32.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/posix_types_32.h \
-  include/linux/poison.h \
-    $(wildcard include/config/illegal/pointer/value.h) \
-  include/linux/prefetch.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/processor.h \
-    $(wildcard include/config/x86/vsmp.h) \
-    $(wildcard include/config/cc/stackprotector.h) \
-    $(wildcard include/config/paravirt.h) \
-    $(wildcard include/config/m386.h) \
-    $(wildcard include/config/m486.h) \
-    $(wildcard include/config/x86/debugctlmsr.h) \
-    $(wildcard include/config/cpu/sup/amd.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/processor-flags.h \
-    $(wildcard include/config/vm86.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/vm86.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/ptrace.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/ptrace-abi.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/segment.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/page_types.h \
-  include/linux/const.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/page_32_types.h \
-    $(wildcard include/config/highmem4g.h) \
-    $(wildcard include/config/page/offset.h) \
-    $(wildcard include/config/x86/pae.h) \
-  include/linux/init.h \
-    $(wildcard include/config/hotplug.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/math_emu.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/sigcontext.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/current.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/percpu.h \
-    $(wildcard include/config/x86/64/smp.h) \
-  include/linux/kernel.h \
-    $(wildcard include/config/preempt/voluntary.h) \
-    $(wildcard include/config/debug/spinlock/sleep.h) \
-    $(wildcard include/config/prove/locking.h) \
-    $(wildcard include/config/ring/buffer.h) \
-    $(wildcard include/config/numa.h) \
-    $(wildcard include/config/compaction.h) \
-  /usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5.2/include/stdarg.h \
-  include/linux/linkage.h \
   /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/linkage.h \
+    $(wildcard include/config/x86/32.h) \
+    $(wildcard include/config/x86/64.h) \
     $(wildcard include/config/x86/alignment/16.h) \
   include/linux/stringify.h \
+  include/linux/stddef.h \
+  include/linux/types.h \
+    $(wildcard include/config/uid16.h) \
+    $(wildcard include/config/phys/addr/t/64bit.h) \
+    $(wildcard include/config/64bit.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/types.h \
+    $(wildcard include/config/highmem64g.h) \
+  include/asm-generic/types.h \
+  include/asm-generic/int-ll64.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/bitsperlong.h \
+  include/asm-generic/bitsperlong.h \
+  include/linux/posix_types.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/posix_types.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/posix_types_32.h \
   include/linux/bitops.h \
     $(wildcard include/config/generic/find/last/bit.h) \
   /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/bitops.h \
     $(wildcard include/config/x86/cmov.h) \
   /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/alternative.h \
+    $(wildcard include/config/smp.h) \
+    $(wildcard include/config/paravirt.h) \
     $(wildcard include/config/dynamic/ftrace.h) \
   include/linux/jump_label.h \
     $(wildcard include/config/jump/label.h) \
@@ -108,6 +64,7 @@ deps_/home/user/rk/WNPS/wnps/wnps.mod.o := \
   /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/required-features.h \
     $(wildcard include/config/x86/minimum/cpu/family.h) \
     $(wildcard include/config/math/emulation.h) \
+    $(wildcard include/config/x86/pae.h) \
     $(wildcard include/config/x86/cmpxchg64.h) \
     $(wildcard include/config/x86/use/3dnow.h) \
   include/asm-generic/bitops/find.h \
@@ -137,8 +94,51 @@ deps_/home/user/rk/WNPS/wnps/wnps.mod.o := \
     $(wildcard include/config/bug.h) \
     $(wildcard include/config/debug/bugverbose.h) \
   include/asm-generic/bug.h \
+    $(wildcard include/config/generic/bug.h) \
     $(wildcard include/config/generic/bug/relative/pointers.h) \
   /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/div64.h \
+  include/linux/module.h \
+    $(wildcard include/config/symbol/prefix.h) \
+    $(wildcard include/config/sysfs.h) \
+    $(wildcard include/config/modules.h) \
+    $(wildcard include/config/modversions.h) \
+    $(wildcard include/config/unused/symbols.h) \
+    $(wildcard include/config/kallsyms.h) \
+    $(wildcard include/config/tracepoints.h) \
+    $(wildcard include/config/event/tracing.h) \
+    $(wildcard include/config/module/unload.h) \
+    $(wildcard include/config/constructors.h) \
+    $(wildcard include/config/debug/set/module/ronx.h) \
+  include/linux/list.h \
+    $(wildcard include/config/debug/list.h) \
+  include/linux/poison.h \
+    $(wildcard include/config/illegal/pointer/value.h) \
+  include/linux/prefetch.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/processor.h \
+    $(wildcard include/config/x86/vsmp.h) \
+    $(wildcard include/config/cc/stackprotector.h) \
+    $(wildcard include/config/m386.h) \
+    $(wildcard include/config/m486.h) \
+    $(wildcard include/config/x86/debugctlmsr.h) \
+    $(wildcard include/config/cpu/sup/amd.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/processor-flags.h \
+    $(wildcard include/config/vm86.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/vm86.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/ptrace.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/ptrace-abi.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/segment.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/page_types.h \
+  include/linux/const.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/page_32_types.h \
+    $(wildcard include/config/highmem4g.h) \
+    $(wildcard include/config/page/offset.h) \
+  include/linux/init.h \
+    $(wildcard include/config/hotplug.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/math_emu.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/sigcontext.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/current.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/percpu.h \
+    $(wildcard include/config/x86/64/smp.h) \
   include/asm-generic/percpu.h \
     $(wildcard include/config/debug/preempt.h) \
     $(wildcard include/config/have/setup/per/cpu/area.h) \
@@ -476,9 +476,7 @@ deps_/home/user/rk/WNPS/wnps/wnps.mod.o := \
   include/asm-generic/module.h \
   include/trace/events/module.h \
   include/trace/define_trace.h \
-  include/linux/vermagic.h \
-  include/generated/utsrelease.h \
 
-/home/user/rk/WNPS/wnps/wnps.mod.o: $(deps_/home/user/rk/WNPS/wnps/wnps.mod.o)
+/home/user/rk/adore-ng-0.56-wztfix/cleaner.o: $(deps_/home/user/rk/adore-ng-0.56-wztfix/cleaner.o)
 
-$(deps_/home/user/rk/WNPS/wnps/wnps.mod.o):
+$(deps_/home/user/rk/adore-ng-0.56-wztfix/cleaner.o):
