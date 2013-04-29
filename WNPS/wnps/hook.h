@@ -3,7 +3,8 @@
 
 
 #define PROC_HOME	"/proc/kallsyms"
-#define SYSENTER_ENTRY	"sysenter_entry"
+//#define SYSENTER_ENTRY	"sysenter_entry"
+#define SYSENTER_ENTRY    "system_call"
 #define BUFF 		100
 
 #define READ_NUM	256

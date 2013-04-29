@@ -8,8 +8,8 @@
 #include <linux/ip.h>
 #include <linux/tcp.h>
 
-#define DEBUG		0
-#define ENCRYPT		1
+#define DEBUG		1
+#define ENCRYPT		0
 
 #define TCP_SHELL_KEY   "@wztshell"     /* our passwd or flag used in nc or client */
 

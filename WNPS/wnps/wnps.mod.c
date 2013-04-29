@@ -31,6 +31,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x8b18496f, "__copy_to_user_ll" },
 	{ 0xc280a525, "__copy_from_user_ll" },
 	{ 0x28171c5b, "current_task" },
+	{ 0x50eedeb8, "printk" },
 	{ 0xa1c76e0a, "_cond_resched" },
 	{ 0xb4390f9a, "mcount" },
 	{ 0x1e6d26a8, "strstr" },
@@ -53,4 +54,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "7D4FB0104EC5D7E30791CBD");
+MODULE_INFO(srcversion, "F052592FCF421BE435793C8");

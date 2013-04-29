@@ -48,6 +48,9 @@ TIOCSWINSZ	kshell.c	45;"	d	file:
 TMPSZ	config.h	21;"	d
 __KERNEL__	hook.c	11;"	d	file:
 __NR_e_exit	kshell.c	48;"	d	file:
+__this_module	wnps.mod.c	/^struct module __this_module$/;"	v	typeref:struct:module
+__used	wnps.mod.c	/^__used$/;"	v	file:
+__used	wnps.mod.c	/^__used$/;"	v	typeref:struct:____versions	file:
 after_call	hook.h	/^unsigned long dire_call,dire_exit,after_call;$/;"	v
 banner	kshell.h	/^char banner[200] = {"\\n\\33[1;31m\\t\\t#welcome to use wnps rookit.enjoy your hacking#\\n\\n"};$/;"	v
 base	hook.h	/^        unsigned long base;$/;"	m	struct:__anon1

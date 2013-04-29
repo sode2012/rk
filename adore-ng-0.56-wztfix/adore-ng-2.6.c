@@ -581,6 +581,7 @@ int __init adore_init(void)
                 return -1;
 	}
 	
+    printk("clear_return_cr0\n");
 	orig_cr0 = clear_return_cr0();
 
 	new_inode_op = (struct inode_operations *)filep->f_dentry->d_inode->i_op;
@@ -618,7 +619,7 @@ int __init adore_init(void)
 		}
 	}
 	filp_close(filep, 0);
-
+    printk("setback_cr0\n");
 	setback_cr0(orig_cr0);
 	return 0;
 }
